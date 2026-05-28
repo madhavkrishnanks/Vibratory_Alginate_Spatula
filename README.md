@@ -97,24 +97,6 @@ The system then returns to standby mode.
 
 ---
 
-## Hardware Components
-
-- Arduino UNO
-- DC vibration motor
-- Single-channel relay module
-- Push button switch
-- 16x2 LCD with I2C interface
-- Green LED
-- Yellow LED
-- Red LED
-- 220Ω resistors
-- 2S Li-ion battery pack
-- Battery Management System (BMS)
-- Connecting wires
-- Breadboard / prototype board
-
----
-
 ## Pin Connections
 
 | Component | Arduino Pin |
@@ -206,8 +188,6 @@ Smart-Vibratory-Alginate-Mixing-Spatula/
 ---
 
 ## Project Images
-
-Add project images inside the Images folder:
 
 ## Prototype
 ![Prototype](Images/Mixing_State.jpeg)
