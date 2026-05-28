@@ -209,10 +209,13 @@ Smart-Vibratory-Alginate-Mixing-Spatula/
 
 Add project images inside the Images folder:
 
+## Prototype
 ![Prototype](Images/Mixing_State.jpeg)
 
-![Circuit Diagram](Images/smart vibratory alignate mixture circuit diagram.jpeg)
+## Circuit Diagram
+![Circuit Diagram](Images/smart_vibratory_alignate_mixture_circuit_diagram.jpeg)
 
+## Working Setup
 ![Working Setup](Images/Interruption_Case.jpeg)
 
 ---
