@@ -174,19 +174,6 @@ LiquidCrystal_I2C
 
 ---
 
-## Folder Structure
-
-Smart-Vibratory-Alginate-Mixing-Spatula/
-
-├── README.md  
-├── Arduino_Code/  
-├── Circuit_Diagram/  
-├── Images/  
-├── Documentation/  
-└── Components_List/  
-
----
-
 ## Project Images
 
 ## Prototype
