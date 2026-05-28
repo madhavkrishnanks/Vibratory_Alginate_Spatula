@@ -211,7 +211,7 @@ Add project images inside the Images folder:
 
 ![Prototype](Images/Mixing_State.jpeg)
 
-![Circuit Diagram](Images/circuit_diagram.png)
+![Circuit Diagram](Images/smart vibratory alignate mixture circuit diagram.jpeg)
 
 ![Working Setup](Images/Interruption_Case.jpeg)
 
