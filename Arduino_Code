@@ -1,0 +1,213 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+#define BUTTON_PIN 4
+#define RELAY_PIN 2
+
+#define GREEN_LED 5
+#define YELLOW_LED 6
+#define RED_LED 7
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+bool motorState = false;
+bool lastState = HIGH;
+
+unsigned long pressStart = 0;
+bool buttonHeld = false;
+
+unsigned long motorStartTime = 0;
+const unsigned long motorRunLimit = 45000; // 45 seconds
+
+unsigned long stopIndicatorTime = 0;
+bool showRed = false;
+
+bool interrupted = false;
+
+void setup() {
+
+  Serial.begin(9600);
+
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+  pinMode(RELAY_PIN, OUTPUT);
+
+  pinMode(GREEN_LED, OUTPUT);
+  pinMode(YELLOW_LED, OUTPUT);
+  pinMode(RED_LED, OUTPUT);
+
+  digitalWrite(RELAY_PIN, HIGH); // Motor OFF initially
+
+  lcd.init();
+  lcd.backlight();
+
+  // -------- STARTUP ANIMATION --------
+
+  String msg = "Smart vibratory alginate mixing spatula   ";
+
+  for (int i = 0; i < msg.length() - 15; i++) {
+
+    lcd.clear();
+
+    lcd.setCursor(0, 0);
+    lcd.print(msg.substring(i, i + 16));
+
+    delay(250);
+  }
+
+  delay(500);
+
+  lcd.clear();
+}
+
+void loop() {
+
+  bool currentState = digitalRead(BUTTON_PIN);
+
+  // -------- BUTTON PRESSED --------
+
+  if (lastState == HIGH && currentState == LOW) {
+
+    pressStart = millis();
+    buttonHeld = true;
+  }
+
+  // -------- BUTTON RELEASED --------
+
+  if (lastState == LOW && currentState == HIGH && buttonHeld) {
+
+    unsigned long pressDuration = millis() - pressStart;
+
+    // SHORT PRESS
+    if (pressDuration < 5000) {
+
+      motorState = !motorState;
+
+      if (motorState) {
+
+        motorStartTime = millis();
+        interrupted = false;
+
+      } else {
+
+        showRed = true;
+        interrupted = true;
+
+        stopIndicatorTime = millis();
+      }
+    }
+
+    buttonHeld = false;
+  }
+
+  // -------- LONG PRESS --------
+
+  if (currentState == LOW && buttonHeld) {
+
+    if (millis() - pressStart >= 5000) {
+
+      motorState = false;
+
+      interrupted = true;
+      showRed = true;
+
+      stopIndicatorTime = millis();
+
+      buttonHeld = false;
+    }
+  }
+
+  // -------- AUTO OFF AFTER 45 SECONDS --------
+
+  if (motorState && (millis() - motorStartTime >= motorRunLimit)) {
+
+    motorState = false;
+
+    interrupted = false;
+
+    showRed = true;
+
+    stopIndicatorTime = millis();
+  }
+
+  // -------- MOTOR CONTROL --------
+
+  digitalWrite(RELAY_PIN, motorState ? LOW : HIGH);
+
+  // -------- LED + LCD LOGIC --------
+
+  if (motorState) {
+
+    // YELLOW LED = MIXING
+
+    digitalWrite(GREEN_LED, LOW);
+    digitalWrite(YELLOW_LED, HIGH);
+    digitalWrite(RED_LED, LOW);
+
+    unsigned long timeLeft =
+      (motorRunLimit - (millis() - motorStartTime)) / 1000;
+
+    lcd.setCursor(0, 0);
+    lcd.print("MIXING...      ");
+
+    lcd.setCursor(0, 1);
+    lcd.print("Left: ");
+    lcd.print(timeLeft);
+    lcd.print("s   ");
+  }
+
+  else {
+
+    if (showRed) {
+
+      // RED LED = DONE / INTERRUPTED
+
+      digitalWrite(GREEN_LED, LOW);
+      digitalWrite(YELLOW_LED, LOW);
+      digitalWrite(RED_LED, HIGH);
+
+      if (interrupted) {
+
+        lcd.setCursor(0, 0);
+        lcd.print("INTERRUPTED    ");
+
+        lcd.setCursor(0, 1);
+        lcd.print("Standby Mode   ");
+
+      } else {
+
+        lcd.setCursor(0, 0);
+        lcd.print("DONE           ");
+
+        lcd.setCursor(0, 1);
+        lcd.print("Remove Material");
+      }
+
+      // Show red screen for 5 sec
+
+      if (millis() - stopIndicatorTime > 5000) {
+
+        showRed = false;
+      }
+    }
+
+    else {
+
+      // GREEN LED = READY
+
+      digitalWrite(GREEN_LED, HIGH);
+      digitalWrite(YELLOW_LED, LOW);
+      digitalWrite(RED_LED, LOW);
+
+      lcd.setCursor(0, 0);
+      lcd.print("READY          ");
+
+      lcd.setCursor(0, 1);
+      lcd.print("Press Button   ");
+    }
+  }
+
+  lastState = currentState;
+
+  delay(100);
+}
