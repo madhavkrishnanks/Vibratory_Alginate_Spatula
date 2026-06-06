@@ -186,7 +186,9 @@ LiquidCrystal_I2C
 ![Working Setup](Media/Interruption_Case.jpeg)
 
 ## Project Video
-You can watch the full demonstration video here : [Watch this project in action](https://drive.google.com/file/d/1K80Q-TrVTf4OxiMjnBZcLW8OxVtuD-dj/view?usp=drive_link)
+You can watch the full demonstration video here (1 min 36 sec) : [Watch this project in action](https://drive.google.com/file/d/1K80Q-TrVTf4OxiMjnBZcLW8OxVtuD-dj/view?usp=drive_link)
+Here is the Hyperlapse video(32 second) : [Watch this project in Hyperlapsed action](https://drive.google.com/file/d/15bnn6XO1Qwq45vvk-6YtOPP-nqUCi_YI/view?usp=drive_link)
+
 ---
 
 ## Future Improvements
