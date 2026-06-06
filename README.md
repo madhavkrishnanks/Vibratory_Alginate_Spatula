@@ -174,7 +174,7 @@ LiquidCrystal_I2C
 
 ---
 
-## Project Images
+## Project Media
 
 ## Prototype
 ![Prototype](Images/Mixing_State.jpeg)
@@ -185,6 +185,8 @@ LiquidCrystal_I2C
 ## Working Setup
 ![Working Setup](Images/Interruption_Case.jpeg)
 
+## Project Video
+You can watch the full demonstration video here : [Watch this project in action](https://drive.google.com/file/d/1K80Q-TrVTf4OxiMjnBZcLW8OxVtuD-dj/view?usp=drive_link)
 ---
 
 ## Future Improvements
